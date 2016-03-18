@@ -1,0 +1,39 @@
+extends layout
+
+block content
+	h1= title
+	p Welcome to our test
+
+	// WRAPPER
+	#wrapper
+		
+		//USER INFO
+		// I prefer JADE notation to piped HTML, so I'm using that instead of what the sample code shows.
+		#userInfo
+			h2 User Info
+			p
+				strong Name:
+					span#userInfoName
+				br
+				strong Age:
+					span#userInfoName
+				br
+				strong Gender:
+					span#userInfoGender
+				br
+				strong Location:
+					span#userInfoLocation
+		// end USER INFO
+
+		// USER LIST
+		h2 User List
+		#userList
+			table
+				thead
+					th username
+					th email
+					th Delete?
+				tbody
+		// end USER LIST
+
+	// end WRAPPER
