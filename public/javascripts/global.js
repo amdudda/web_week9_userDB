@@ -13,6 +13,9 @@ $(document).ready(function() {
 	// add event listener for 'add user' button click
 	$("#btnAddUser").on("click",addUser);
 
+	// event listener for 'delete user' link click
+	$("#userList table tbody").on("click","td a.linkdeleteuser", deleteUser);
+
 });		// end document.ready
 
 // functions called by code
@@ -129,3 +132,37 @@ function addUser(event) {
 	}	// end if-else for errorCount
 
 };  // end addUser
+
+// delete user
+function deleteUser(event) {
+
+	event.preventDefault();
+
+	// popup a confirmation dialog
+	var confirmation = confirm("Are you sure you want to delete this user?");
+
+	if (confirmation === true) {
+		// if they say yes, delete the user
+		$.ajax({
+			type: "DELETE",
+			url: "/users/deleteuser/" + $(this).attr("rel")
+		}).done( function(response) {
+			if (response.msg === "" ) {
+				// do nothing
+			}
+			else {
+				// alert the user 
+				//don't need to prefix with "error:" because that's already in the message.
+				alert(response.msg);
+			}
+
+			// update the table
+			populateTable();
+		});
+	}
+	else {
+		// do nothing
+		return false;
+	}	// end if-else handler for confirmation
+
+};
