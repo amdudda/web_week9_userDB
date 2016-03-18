@@ -12,16 +12,16 @@ block content
 		#userInfo
 			h2 User Info
 			p
-				strong Name:
+				strong Name: &#32;
 					span#userInfoName
 				br
-				strong Age:
+				strong Age: &#32;
 					span#userInfoName
 				br
-				strong Gender:
+				strong Gender: &#32;
 					span#userInfoGender
 				br
-				strong Location:
+				strong Location: &#32;
 					span#userInfoLocation
 		// end USER INFO
 
@@ -35,5 +35,21 @@ block content
 					th Delete?
 				tbody
 		// end USER LIST
+
+		// ADD USER
+		h2 Add User
+		#addUser
+			fieldset
+				input#inputUserName(type="text",placeholder="Username")
+				input#inputUserEmail(type="text",placeholder="Email")
+				br
+				input#inputUserFullName(type="text",placeholder="Full Name")
+				input#inputUserAge(type="text",placeholder="Age")
+				br
+				input#inputUserLocation(type="text",placeholder="Location")
+				input#inputUserGender(type="text",placeholder="Gender")
+				br
+				button#btnAddUser Add User
+		// end ADD USER
 
 	// end WRAPPER

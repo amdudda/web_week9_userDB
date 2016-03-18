@@ -9,7 +9,9 @@ $(document).ready(function() {
 
 	// add event listener to pull up user detail on click
 	$('#userList table tbody').on('click', 'td a.linkshowuser', showUserInfo);
-	//function(){alert("hi!");} );
+
+	// add event listener for 'add user' button click
+	$("#btnAddUser").on("click",addUser);
 
 });		// end document.ready
 
@@ -68,3 +70,62 @@ function showUserInfo(event) {
 	$("#userInfoLocation").text(thisUserObject.location);
 
 }		// end showUserInfo
+
+
+// and here's the function to add a new user
+function addUser(event) {
+
+	// prevent it from doing ordinary form submission
+	event.preventDefault();
+
+	// very simple validation, just checks for empty fields
+	// iterates through all the inputs in the #addUser container
+	// and increments errorCount each time an empty field is encountered
+	var errorCount = 0;
+	$("#addUser input").each(function(index,val) {
+		if ( $(this).val() === "" ) { errorCount++ }
+	});
+
+	// if errorCount is zero, then we can proceed with insert
+	if ( errorCount === 0 ) {
+		// collect data for new user into a JSON string
+		var newUser = {
+			"username": $("#addUser fieldset input#inputUserName").val(),
+			"email": $("#addUser fieldset input#inputUserEmail").val(),
+			"fullname": $("#addUser fieldset input#inputUserFullName").val(),
+			"age": $("#addUser fieldset input#inputUserAge").val(),
+			"location": $("#addUser fieldset input#inputUserLocation").val(),
+			"gender": $("#addUser fieldset input#inputUserGender").val()
+		}
+
+		// use AJAX to POST object to adduser service
+		$.ajax({
+			type: 'POST',
+			data: newUser,
+			url: '/users/adduser',
+			dataType: 'JSON'
+		}).done(function( response ) {
+			console.log("trying to post");
+			// check for success (i.e. empty string) response
+			if (response.msg === "") {
+				
+				// clear form fields
+				$("#addUser fieldset input").val("");
+
+				// update table
+				populateTable();
+			}
+			else {
+				// something went wrong, alert the user
+				alert("Error: " + response.msg);
+			}
+		});		// end AJAX call
+
+	}	// end if errorCount === 0
+	else {  
+		// errorCount is nonzero - tell user to fill in all form fields
+		alert("Please fill in all fields.");
+		return false;
+	}	// end if-else for errorCount
+
+};  // end addUser
