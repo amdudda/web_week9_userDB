@@ -32,6 +32,7 @@ block content
 				thead
 					th username
 					th email
+					th Edit?
 					th Delete?
 				tbody
 		// end USER LIST
@@ -49,7 +50,9 @@ block content
 				input#inputUserLocation(type="text",placeholder="Location")
 				input#inputUserGender(type="text",placeholder="Gender")
 				br
-				button#btnAddUser Add User
+				button#btnAddUser(style="display:visible") Add User
+				button#btnEditUser(style="display:none") Edit User
+				button#btnCancelEdit(style="display:none") Cancel Edit
 		// end ADD USER
 
 	// end WRAPPER

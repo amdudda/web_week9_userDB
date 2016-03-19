@@ -13,8 +13,14 @@ $(document).ready(function() {
 	// add event listener for 'add user' button click
 	$("#btnAddUser").on("click",addUser);
 
+	// event listener to cancel editing
+	$("#btnCancelEdit").on("click",cancelEdit);
+
 	// event listener for 'delete user' link click
 	$("#userList table tbody").on("click","td a.linkdeleteuser", deleteUser);
+
+	// event listener for 'edit user' link click
+	$("#userList table tbody").on("click","td a.linkEditUser", editUser);
 
 });		// end document.ready
 
@@ -39,6 +45,7 @@ function populateTable() {
 			tableContent += "<tr>";
 			tableContent += "<td><a href='#' class='linkshowuser' rel ='" + this.username + "'>" + this.username + "</a></td>";
 			tableContent += "<td>" + this.email + "</td>";
+			tableContent += "<td><a href='#' class='linkEditUser' rel='" + this._id + "'>edit</a></td>";
 			tableContent += "<td><a href='#' class='linkdeleteuser' rel='" + this._id + "'>delete</a></td>";
 			tableContent += "<tr>";
 		});		// end iteration through JSON data
@@ -166,3 +173,28 @@ function deleteUser(event) {
 	}	// end if-else handler for confirmation
 
 };
+
+
+// function to edit user
+function editUser(event) {
+	event.preventDefault();
+	// toggle visibility of add and edit buttons
+	$("#btnAddUser").attr("style","display:none");
+	$("#btnEditUser").attr("style","display:visible");
+	$("#btnCancelEdit").attr("style","display:visible");	
+
+	// TODO: Change header and how to handle submission
+}
+
+function cancelEdit(event) {
+	// resets form after Edit clicked
+	event.preventDefault();
+
+	// toggle visibility of add and edit buttons
+	$("#btnAddUser").attr("style","display:visible");
+	$("#btnEditUser").attr("style","display:none");
+	$("#btnCancelEdit").attr("style","display:none");
+
+	// then clear fields
+	$("#addUser fieldset input").val("");
+}
