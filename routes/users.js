@@ -39,3 +39,16 @@ router.delete('/deleteuser/:id',function(req,res) {
 });
 
 module.exports = router;
+
+/*
+ * PUT to edit user
+ */
+router.put('/edituser/:id',function(req,res) {
+	var db = req.db;
+	var collection = db.get('userlist');
+	var userToEdit = req.params.id;
+	var dataToUpdate = req.body;
+	collection.update( { '_id' : userToEdit }, dataToUpdate , function(err) {
+		res.send( (err === null) ? { msg: "" } : { msg: "Error: " + err });
+	});
+});

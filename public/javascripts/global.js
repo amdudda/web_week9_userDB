@@ -16,6 +16,9 @@ $(document).ready(function() {
 	// event listener to cancel editing
 	$("#btnCancelEdit").on("click",cancelEdit);
 
+	// event listener to submit edit
+	$("#btnEditUser").on("click",sendEdit);
+
 	// event listener for 'delete user' link click
 	$("#userList table tbody").on("click","td a.linkdeleteuser", deleteUser);
 
@@ -115,7 +118,7 @@ function addUser(event) {
 			url: '/users/adduser',
 			dataType: 'JSON'
 		}).done(function( response ) {
-			console.log("trying to post");
+			// debugging: console.log("trying to post");
 			// check for success (i.e. empty string) response
 			if (response.msg === "") {
 				
@@ -175,7 +178,7 @@ function deleteUser(event) {
 };
 
 
-// function to edit user
+// function to enable edit user
 function editUser(event) {
 	event.preventDefault();
 	// toggle visibility of add and edit buttons
@@ -208,10 +211,15 @@ function editUser(event) {
 	$("#inputUserID").val(thisUserObject._id);
 }
 
+// resets form after Edit clicked
 function cancelEdit(event) {
-	// resets form after Edit clicked
 	event.preventDefault();
 
+	resetForm();
+}
+
+// resets edit buttons and form fields
+function resetForm() {
 	// toggle visibility of add and edit buttons
 	$("#btnAddUser").attr("style","display:visible");
 	$("#btnEditUser").attr("style","display:none");
@@ -222,4 +230,65 @@ function cancelEdit(event) {
 	
 	// Change header 
 	$("#addOrEdit").text("Add User");
+}
+
+// sends update to database
+function sendEdit(event) {
+	event.preventDefault();
+	
+	// gather data and submit it to edit handler
+	// repurposes the add user code extensively
+	var idToEdit = $("#addUser fieldset input#inputUserID").val();
+
+	// very simple validation, just checks for empty fields
+	// iterates through all the inputs in the #addUser container
+	// and increments errorCount each time an empty field is encountered
+	var errorCount = 0;
+	$("#addUser input").each(function(index,val) {
+		if ( $(this).val() === "" ) { errorCount++ }
+	});
+
+	// if errorCount is zero, then we can proceed with update
+	if ( errorCount === 0 ) {
+		// collect data for edited user into a JSON string
+		// TODO: this is clunky and just updates everything even if there are no changes; perhaps future version might only submit non-empty fields?
+		var editedUser = {
+			"username": $("#addUser fieldset input#inputUserName").val(),
+			"email": $("#addUser fieldset input#inputUserEmail").val(),
+			"fullname": $("#addUser fieldset input#inputUserFullName").val(),
+			"age": $("#addUser fieldset input#inputUserAge").val(),
+			"location": $("#addUser fieldset input#inputUserLocation").val(),
+			"gender": $("#addUser fieldset input#inputUserGender").val()
+		}
+
+		// use AJAX to POST object to adduser service
+		$.ajax({
+			type: 'PUT',
+			data: editedUser,
+			url: '/users/edituser/' + idToEdit,
+			dataType: 'JSON'
+		}).done(function( response ) {
+			console.log("trying to post");
+			// check for success (i.e. empty string) response
+			if (response.msg === "") {
+				
+				// reset form
+				resetForm();
+
+				// update table
+				populateTable();
+			}
+			else {
+				// something went wrong, alert the user
+				alert("Error: " + response.msg);
+			}
+		});		// end AJAX call
+
+	}	// end if errorCount === 0
+	else {  
+		// errorCount is nonzero - tell user to fill in all form fields
+		alert("Please fill in all fields.");
+		return false;
+	}	// end if-else for errorCount
+
 }
