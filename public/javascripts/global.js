@@ -183,7 +183,29 @@ function editUser(event) {
 	$("#btnEditUser").attr("style","display:visible");
 	$("#btnCancelEdit").attr("style","display:visible");	
 
-	// TODO: Change header and how to handle submission
+	// Change header 
+	$("#addOrEdit").text("Edit User");
+
+	// fetch user data and populate fields - copypasta from showUserInfo
+
+	// retrieve _id from link rel attribute
+	var thisUserName = $(this).attr('rel');
+	
+	// get index of the object based on its id value
+	var arrayPosition = userListData.map(function(arrayItem) {
+		return arrayItem._id; }).indexOf(thisUserName);
+	
+	// get our User object based on the ID we've just gleaned
+	var thisUserObject = userListData[arrayPosition];
+
+	// populate form fields
+	$("#inputUserName").val(thisUserObject.username);
+	$("#inputUserEmail").val(thisUserObject.email);
+	$("#inputUserFullName").val(thisUserObject.fullname);
+	$("#inputUserAge").val(thisUserObject.age);
+	$("#inputUserLocation").val(thisUserObject.location);
+	$("#inputUserGender").val(thisUserObject.gender);
+	$("#inputUserID").val(thisUserObject._id);
 }
 
 function cancelEdit(event) {
@@ -197,4 +219,7 @@ function cancelEdit(event) {
 
 	// then clear fields
 	$("#addUser fieldset input").val("");
+	
+	// Change header 
+	$("#addOrEdit").text("Add User");
 }

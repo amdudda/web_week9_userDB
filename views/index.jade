@@ -38,7 +38,7 @@ block content
 		// end USER LIST
 
 		// ADD USER
-		h2 Add User
+		h2#addOrEdit Add User
 		#addUser
 			fieldset
 				input#inputUserName(type="text",placeholder="Username")
@@ -53,6 +53,9 @@ block content
 				button#btnAddUser(style="display:visible") Add User
 				button#btnEditUser(style="display:none") Edit User
 				button#btnCancelEdit(style="display:none") Cancel Edit
+				// hidden field to store id for editing user
+				br
+				input#inputUserID(type="text",placeholder="ID (hidden)" style="display:none")
 		// end ADD USER
 
 	// end WRAPPER
